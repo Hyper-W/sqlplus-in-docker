@@ -1,0 +1,25 @@
+services:
+  sqlplus:
+    build:
+      context: .
+      args:
+        - OL_VERSION=${OL_VERSION:-8} #Oracle Linux Version
+        - USER=${USER:-user} # Your User Name
+        - USER_ID=${USER_ID:-1000} # Your User ID
+        - GROUP_ID=${GROUP_ID:-1000} # Your GROUP ID
+    # container_name: sqlplus
+    environment:
+      - NLS_LANG=${NLS_LANG:-Japanese_Japan.JA16SJISTILDE} # Oracle Database Character Encoding
+      # DB Connection String
+      - DB_USERNAME=${DB_USERNAME:-user} # DB User Name
+      - DB_PASSWORD=${DB_PASSWORD:-password} # DB Password
+      - DB_HOST=${DB_HOST:-ip} # DB Hostname
+      - DB_PORT=${DB_PORT:-1521} # DB Port Number
+      - DB_SERVICE=${DB_SERVICE:-service} # DB Service Name
+      - SQL_NAME=${SQL_NAME:-sqlfilename.sql} # Exec SQL File Name
+      # - CONNECTION_STRING=${DB_USERNAME}/${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_SERVICE} # Build Connection String OR Override Connection String
+    image: sqlplus
+    volumes:
+      - type: bind
+        source: ./sqlfiles
+        target: /workdir
